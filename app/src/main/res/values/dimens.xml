@@ -9,4 +9,5 @@
     <dimen name="imagewidth">160dp</dimen>
     <dimen name="progress_bar_width">42dp</dimen>
     <dimen name="progress_bar_height">42dp</dimen>
+    <dimen name="pb_size">42dp</dimen>
 </resources>

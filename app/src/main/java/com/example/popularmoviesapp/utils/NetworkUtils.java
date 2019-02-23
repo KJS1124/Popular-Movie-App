@@ -14,13 +14,12 @@ import java.util.Scanner;
 
 public class NetworkUtils {
     public static final String API_KEY = "01fc236f22edef7f8ecfb2fc4207c898";
-    public static final String BASE_URL = "http://api.themoviedb.org/3/movie/popular";
+    public static final String BASE_URL = "http://api.themoviedb.org/3/movie";
     public static final String KEY_PARAM = "api_key";
     public static final String SIZE = "w185";
     public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
-    public  static final String SORT_PARAM = "sort_by";
-    public  static final String SORT_BY_POPULARIRTY = "popularity.desc";
-    public  static final String SORT_BY_RATING = "vote_average.desc";
+    public static final String POPULAR_MOVIE_PATH_PARAM= "popular";
+    public static final String TOP_MOVIE_PATH_PARAM = "top_rated";
 
 
 
@@ -65,8 +64,8 @@ public class NetworkUtils {
                 .buildUpon()
                 .appendQueryParameter(KEY_PARAM,API_KEY);
         switch (basedOn){
-            case "popular": uriBuilder.appendQueryParameter(SORT_PARAM,SORT_BY_POPULARIRTY); break;
-            case "top": uriBuilder.appendQueryParameter(SORT_PARAM,SORT_BY_RATING); break;
+            case "popular": uriBuilder.appendPath(POPULAR_MOVIE_PATH_PARAM); break;
+            case "top": uriBuilder.appendPath(TOP_MOVIE_PATH_PARAM); break;
         }
         Uri uri = uriBuilder.build();
         URL url = null;

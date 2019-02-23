@@ -7,7 +7,7 @@
     <ImageView
         android:id="@+id/iv_list_item"
         android:layout_width="match_parent"
-        android:contentDescription="TODO"
+        android:adjustViewBounds="true"
         android:layout_height="match_parent" />
 
 </FrameLayout>

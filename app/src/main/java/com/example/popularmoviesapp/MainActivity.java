@@ -10,7 +10,9 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.popularmoviesapp.adapters.MovieAdapter;
@@ -28,6 +30,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     RecyclerView mRecyclerView;
+    ProgressBar mPB;
+    TextView mError;
 
 
     @Override
@@ -35,6 +39,11 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mRecyclerView = findViewById(R.id.rv_main_activity);
+        mPB = findViewById(R.id.pb_loading);
+        mError = findViewById(R.id.tv_error_message);
+        GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
+        mRecyclerView.setHasFixedSize(false);
+        mRecyclerView.setLayoutManager(layoutManager);
         new MovieQueryTask().execute("popular");
 
     }
@@ -51,12 +60,26 @@ public class MainActivity extends AppCompatActivity {
         return new ArrayList<>();
     }
 
+    public void showMessage(){
+        mError.setVisibility(View.VISIBLE);
+    }
+    public void hideMessage(){
+        mError.setVisibility(View.INVISIBLE);
+    }
+
+
+    public void showProgress(){
+        mPB.setVisibility(View.VISIBLE);
+    }
+    public void hideProgress(){
+        mPB.setVisibility(View.INVISIBLE);
+    }
 
     class MovieQueryTask extends AsyncTask<String, Void, List<Movie>> implements MovieAdapter.ClickListener {
 
         @Override
         protected void onPreExecute() {
-            super.onPreExecute();
+            showProgress();
         }
 
         @Override
@@ -67,10 +90,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(List<Movie> movies) {
+            hideProgress();
             Log.d("Got data", movies.toString());
-            GridLayoutManager layoutManager = new GridLayoutManager(MainActivity.this, 2);
-            mRecyclerView.setHasFixedSize(false);
-            mRecyclerView.setLayoutManager(layoutManager);
+            if(movies.size()>0)
+                hideMessage();
+            else
+                showMessage();
             mRecyclerView.setAdapter(new MovieAdapter(movies, this));
         }
 
