@@ -20,6 +20,8 @@ public class NetworkUtils {
     public static final String BASE_IMAGE_URL = "http://image.tmdb.org/t/p";
     public static final String POPULAR_MOVIE_PATH_PARAM= "popular";
     public static final String TOP_MOVIE_PATH_PARAM = "top_rated";
+    public static final String VIDEOS_PATH_PARAM = "videos";
+    public static final String REVIEW_PATH_PARAM = "reviews";
 
 
 
@@ -76,5 +78,45 @@ public class NetworkUtils {
         }
         Log.i("Created Path", url.toString());
         return url;
+    }
+
+    public static URL getVideoUrl(int id) {
+        Uri.Builder uriBuilder = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(id+"")
+                .appendPath(VIDEOS_PATH_PARAM)
+                .appendQueryParameter(KEY_PARAM,API_KEY);
+
+        Uri uri = uriBuilder.build();
+        URL url = null;
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.i("Created Path", url.toString());
+        return url;
+    }
+
+    public static URL getReviewUrl(int id) {
+        Uri.Builder uriBuilder = Uri.parse(BASE_URL)
+                .buildUpon()
+                .appendPath(id+"")
+                .appendPath(REVIEW_PATH_PARAM)
+                .appendQueryParameter(KEY_PARAM,API_KEY);
+
+        Uri uri = uriBuilder.build();
+        URL url = null;
+        try {
+            url = new URL(uri.toString());
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        }
+        Log.i("Created Path", url.toString());
+        return url;
+    }
+
+    public static String getYoutubeImageUrl(String key) {
+        return "http://img.youtube.com/vi/"+key+"/mqdefault.jpg";
     }
 }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <ListPreference
+        android:title="@string/sorting_title"
+        android:key="@string/sorting_preference_key"
+        android:entries="@array/entities"
+        android:entryValues="@array/values"
+        android:defaultValue="@string/popular">
+    </ListPreference>
+</PreferenceScreen>

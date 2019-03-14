@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="entities">
+        <item>@string/popular</item>
+        <item>@string/top</item>
+        <item>@string/favourite</item>
+    </array>
+
+    <array name="values">
+        <item>@string/popular_value</item>
+        <item>@string/top_value</item>
+        <item>@string/favourite_value</item>
+    </array>
+</resources>

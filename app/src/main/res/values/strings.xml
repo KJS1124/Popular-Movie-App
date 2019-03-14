@@ -4,6 +4,14 @@
     <string name="language">Language</string>
     <string name="release_date">Release Date</string>
     <string name="rating">User Rating</string>
-    <string name="top">TOP</string>
-    <string name="popular">popular</string>
+    <string name="top">Top Rated</string>
+    <string name="popular">Popular</string>
+    <string name="sorting_title">Sort Order</string>
+    <string name="sorting_preference_key">sort</string>
+    <string name="setting">Setting</string>
+    <string name="favourite">Favourite</string>
+    <string name="favourite_value">favourite</string>
+    <string name="top_value">top</string>
+    <string name="popular_value">popular</string>
+    <string name="favmenutitle">fav</string>
 </resources>

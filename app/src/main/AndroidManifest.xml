@@ -12,8 +12,19 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".DisplayDetails"></activity>
-        <activity android:name=".MainActivity">
+        <activity android:name=".SettingActivity"
+            android:label="@string/setting"
+            android:parentActivityName=".MainActivity"
+            >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity"
+                ></meta-data>
+        </activity>
+        <activity android:name=".DisplayDetails" />
+        <activity android:name=".MainActivity"
+            android:launchMode="singleTop"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -75,5 +75,22 @@
             android:layout_marginLeft="@dimen/sub_part_margin"
             android:layout_marginRight="@dimen/sub_part_margin" />
 
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/video_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/video_recycler_view_height"
+        android:orientation="vertical"
+        ></android.support.v7.widget.RecyclerView>
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/review_recycle_view"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/video_recycler_view_height"
+        android:orientation="vertical"
+        ></android.support.v7.widget.RecyclerView>
+
     </LinearLayout>
 </ScrollView>
