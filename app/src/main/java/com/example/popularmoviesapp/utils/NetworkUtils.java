@@ -1,8 +1,6 @@
 package com.example.popularmoviesapp.utils;
 
 import android.net.Uri;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import java.io.IOException;
@@ -118,5 +116,9 @@ public class NetworkUtils {
 
     public static String getYoutubeImageUrl(String key) {
         return "http://img.youtube.com/vi/"+key+"/mqdefault.jpg";
+    }
+
+    public static Uri getYoutubeVideoUrl(String key) {
+        return Uri.parse("https://www.youtube.com/watch?v="+key);
     }
 }

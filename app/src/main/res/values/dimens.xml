@@ -10,5 +10,5 @@
     <dimen name="progress_bar_width">42dp</dimen>
     <dimen name="progress_bar_height">42dp</dimen>
     <dimen name="pb_size">42dp</dimen>
-    <dimen name="video_recycler_view_height">60dp</dimen>
+    <dimen name="video_recycler_view_height">260dp</dimen>
 </resources>

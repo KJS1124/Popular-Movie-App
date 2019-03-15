@@ -1,5 +1,6 @@
 package com.example.popularmoviesapp;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -21,6 +22,7 @@ import com.example.popularmoviesapp.adapters.ReviewAdapter;
 import com.example.popularmoviesapp.adapters.VideoAdapter;
 import com.example.popularmoviesapp.database.AppDatabase;
 import com.example.popularmoviesapp.model.Movie;
+import com.example.popularmoviesapp.model.Video;
 import com.example.popularmoviesapp.utils.JsonUtils;
 import com.example.popularmoviesapp.utils.NetworkUtils;
 import com.squareup.picasso.Picasso;
@@ -31,7 +33,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DisplayDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<String>> {
+public class DisplayDetails extends AppCompatActivity implements LoaderManager.LoaderCallbacks<List<String>> , VideoAdapter.CustomClickListner {
 
     private static final String MOVIE_ID_KEY = "movie_id";
     public static String MOVIE_KEY = "movie";
@@ -63,8 +65,8 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
         movie = (Movie) getIntent().getSerializableExtra(DATA);
         mVideoRecylerView = findViewById(R.id.video_recycle_view);
         mReviewRecylerView = findViewById(R.id.review_recycle_view);
-        mVideoRecylerView.setLayoutManager(new LinearLayoutManager(this));
-        mReviewRecylerView.setLayoutManager(new LinearLayoutManager(this));
+        mVideoRecylerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        mReviewRecylerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
         mVideoRecylerView.setHasFixedSize(true);
         mReviewRecylerView.setHasFixedSize(true);
         pupulateUI(movie);
@@ -76,7 +78,8 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
         bundle.putInt(MOVIE_ID_KEY, movie.getId());
         if (null == loader) {
             Log.d("Loader", "onCreate: ");
-            manager.initLoader(MOVIE_DATA_LOADER, bundle,  this);
+            manager.initLoader(MOVIE_DATA_LOADER, bundle,  this).forceLoad();
+            Log.d("Loader", "onCreate: ");
         } else {
             manager.restartLoader(MOVIE_DATA_LOADER, bundle, this);
         }
@@ -116,7 +119,14 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
     @Override
     public Loader<List<String>> onCreateLoader(int i, final @Nullable Bundle bundle) {
 
-        return new AsyncTaskLoader<List<String>>(getApplicationContext()) {
+        return new AsyncTaskLoader<List<String>>(this) {
+
+            @Override
+            protected void onStartLoading() {
+                super.onStartLoading();
+                Log.d("loader data", "onStartLoading: ");
+            }
+
             @Nullable
             @Override
             public List<String> loadInBackground() {
@@ -140,7 +150,7 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoadFinished(@NonNull Loader<List<String>> loader, List<String> strings) {
         try {
-            mVideoRecylerView.setAdapter(new VideoAdapter(JsonUtils.getVideoData(strings.get(1))));
+            mVideoRecylerView.setAdapter(new VideoAdapter(JsonUtils.getVideoData(strings.get(1)),this));
             mReviewRecylerView.setAdapter(new ReviewAdapter(JsonUtils.getReviewData(strings.get(0))));
         } catch (JSONException e) {
             e.printStackTrace();
@@ -152,6 +162,13 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
     @Override
     public void onLoaderReset(@NonNull Loader<List<String>> loader) {
         loader = null;
+    }
+
+    @Override
+    public void onClick(Video video) {
+        Intent intent = new Intent(Intent.ACTION_VIEW,NetworkUtils.getYoutubeVideoUrl(video.getKey()));
+        if(intent.resolveActivity(getPackageManager()) != null)
+            startActivity(intent);
     }
 
     class InsertMovie extends AsyncTask<Movie, Void, Void> {

@@ -17,8 +17,10 @@ import java.util.List;
 
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewViewHolder> {
     List<Review> review;
+    private static final String AUTHOR = "Author";
+    private static final String COMMENT = "Comment";
 
-    public ReviewAdapter(List<Review> review){
+    public ReviewAdapter(List<Review> review) {
         this.review = review;
     }
 
@@ -26,7 +28,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
     @Override
     public ReviewViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         Context context = viewGroup.getContext();
-        View view = LayoutInflater.from(context).inflate(R.layout.review_list_item,viewGroup,false);
+        View view = LayoutInflater.from(context).inflate(R.layout.review_list_item, viewGroup, false);
         return new ReviewViewHolder(view);
     }
 
@@ -52,9 +54,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewView
             review = itemView.findViewById(R.id.review_comment);
         }
 
-        public void bind(Review reviewP){
-            author.setText(reviewP.getAuthor());
-            review.setText(reviewP.getReview());
+        public void bind(Review reviewP) {
+            author.setText(AUTHOR + ": " + reviewP.getAuthor());
+            review.setText(COMMENT + "\n" + reviewP.getReview());
         }
     }
 }

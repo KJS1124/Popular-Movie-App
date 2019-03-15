@@ -16,9 +16,15 @@ import java.util.List;
 
 public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHolder> {
     List<Video> videos;
+    CustomClickListner mClickListner;
 
-    public VideoAdapter(List<Video> videos){
+    public interface CustomClickListner {
+        void onClick(Video video);
+    }
+
+    public VideoAdapter(List<Video> videos, CustomClickListner mClickListner){
         this.videos = videos;
+        this.mClickListner = mClickListner;
     }
 
     @NonNull
@@ -38,13 +44,14 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
         return videos.size();
     }
 
-    class VideoViewHolder extends RecyclerView.ViewHolder {
+    class VideoViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView mImageView;
 
         public VideoViewHolder(@NonNull View itemView) {
             super(itemView);
             mImageView = itemView.findViewById(R.id.iv_video_list_item);
+            mImageView.setOnClickListener(this);
         }
 
         public void bind(Video video){
@@ -52,6 +59,12 @@ public class VideoAdapter extends RecyclerView.Adapter<VideoAdapter.VideoViewHol
                     .error(R.drawable.ic_launcher_background)
                     .placeholder(R.drawable.ic_launcher_background)
                     .into(mImageView);
+        }
+
+        @Override
+        public void onClick(View v) {
+            int position = getAdapterPosition();
+            mClickListner.onClick(videos.get(position));
         }
     }
 }
