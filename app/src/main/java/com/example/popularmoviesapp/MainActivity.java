@@ -59,14 +59,13 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
         mRecyclerView.setLayoutManager(layoutManager);
         appDatabase = AppDatabase.getInstance(getApplicationContext());
         getSharedPreferenceData();
-        getFavMovies();
-        changeAdapter(DEFAULT_VALUE);
 
     }
 
     private void getSharedPreferenceData() {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         sharedPreferences.registerOnSharedPreferenceChangeListener(this);
+        changeAdapter(sharedPreferences.getString(KEY_FOR_PREFERENCES, DEFAULT_VALUE));
     }
 
     private List<Movie> makeCallAndParseData(String basedOn) {
@@ -105,15 +104,10 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
         }
     }
 
-    public void getFavMovies(){
+    public List<Movie> getFavMovies(){
         //MainViewModel viewModel = ViewModelProviders.of(this).get(MainViewModel.class);
         //viewModel.getMovies().observe(this, new Observer<List<Movie>>() {
-        appDatabase.movieDao().loadAllMovies().observe(this, new Observer<List<Movie>>() {
-                @Override
-            public void onChanged(@Nullable List<Movie> movies) {
-                favMovies = movies;
-            }
-        });
+        return appDatabase.movieDao().loadAllMovies();
     }
 
     private void changeAdapter(String value) {
@@ -151,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements MovieAdapter.Clic
                 Log.i("Adapter data", "loadInBackground: ");
                 String basedOn = bundle.getString(BASED_ON_EXTRA, DEFAULT_VALUE);
                 if(basedOn.equals("favourite"))
-                    return favMovies;
+                    return getFavMovies();
                 else
                     return makeCallAndParseData(basedOn);
             }

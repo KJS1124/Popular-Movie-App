@@ -17,6 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.popularmoviesapp.adapters.ReviewAdapter;
 import com.example.popularmoviesapp.adapters.VideoAdapter;
@@ -49,6 +50,8 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
     Movie movie;
     RecyclerView mVideoRecylerView;
     RecyclerView mReviewRecylerView;
+    boolean isMovieThere = false;
+    private Menu menu;
 
     public static String DATA = "moviedata";
 
@@ -85,6 +88,18 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
         }
     }
 
+    private void setFavIcon() {
+        MenuItem item = menu.findItem(R.id.favbutton);
+        if(isMovieThere)
+            item.setIcon(R.drawable.ic_baseline_favorite_24px);
+        else
+            item.setIcon(R.drawable.ic_baseline_favorite_border_24px);
+    }
+
+    private void checkMovieInDataBase(Movie movie) {
+        new GetMovie().execute(movie);
+    }
+
     private void pupulateUI(Movie movie) {
         Picasso.get().load(String.valueOf(NetworkUtils.getImageUrl(movie.getImage().substring(1).toString())))
                 .error(R.drawable.ic_launcher_background)
@@ -101,6 +116,8 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        this.menu = menu;
+        checkMovieInDataBase(movie);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.displayactivitymenu, menu);
         return super.onCreateOptionsMenu(menu);
@@ -176,7 +193,39 @@ public class DisplayDetails extends AppCompatActivity implements LoaderManager.L
         @Override
         protected Void doInBackground(Movie... movies) {
             Movie movie = movies[0];
-            mDB.movieDao().insertMovie(movie);
+
+            if( !isMovieThere ) {
+                mDB.movieDao().insertMovie(movie);
+                isMovieThere = !isMovieThere;
+            }
+            else{
+                mDB.movieDao().deleteMovie(movie);
+                isMovieThere = !isMovieThere;
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            setFavIcon();
+        }
+    }
+
+
+    class GetMovie extends AsyncTask<Movie, Void, Void> {
+
+        @Override
+        protected Void doInBackground(Movie... movies) {
+            Movie movie = movies[0];
+            Movie temp = mDB.movieDao().getMovie(movie.getId());
+            if(null == temp)
+                isMovieThere = false;
+            else
+                isMovieThere = true;
+
+            setFavIcon();
             return null;
         }
     }

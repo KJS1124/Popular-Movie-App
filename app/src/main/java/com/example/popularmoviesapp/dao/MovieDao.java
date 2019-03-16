@@ -15,7 +15,7 @@ import java.util.List;
 public interface MovieDao {
 
     @Query("Select * from movie")
-    LiveData<List<Movie>> loadAllMovies();
+    List<Movie> loadAllMovies();
 
     @Insert
     void insertMovie(Movie movie);
@@ -25,4 +25,7 @@ public interface MovieDao {
 
     @Delete
     void deleteMovie(Movie movie);
+
+    @Query("Select *from movie where id=:id")
+    Movie getMovie(int id);
 }
